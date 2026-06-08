@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<script>
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nívia Quentinha - Pedidos (Apenas Retirada)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background-color: #fff5e6; display: flex; justify-content: center; padding: 10px; }
+        .container { background: #fff; width: 100%; max-width: 450px; min-height: 90vh; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+        .header { background: #e67e22; color: white; padding: 30px 20px; text-align: center; }
+        .header h1 { font-size: 26px; text-transform: uppercase; }
+        .retirada-badge { background: #ffd966; color: #a15813; display: inline-block; padding: 5px 12px; border-radius: 50px; font-size: 14px; font-weight: bold; margin-top: 10px; }
+        .menu-section { padding: 20px; flex-grow: 1; }
+        .product-card { background: #fafafa; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
+        .product-info h3 { font-size: 18px; }
+        .product-info p { color: #e67e22; font-weight: bold; }
+        .controls { display: flex; align-items: center; gap: 15px; }
+        .btn-qty { background: #e67e22; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 20px; font-weight: bold; cursor: pointer; }
+        .qty-val { font-size: 18px; font-weight: bold; width: 20px; text-align: center; }
+        .footer-order { padding: 20px; background: #fff; border-top: 1px solid #eee; }
+        .total-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .send-btn { background: #25d366; color: white; border: none; width: 100%; padding: 18px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .info-retirada { text-align: center; font-size: 14px; color: #e67e22; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nívia Quentinha</h1>
+            <p>Comida caseira com carinho</p>
+            <div class="retirada-badge">📦 APENAS RETIRADA</div>
+        </div>
+        <div class="menu-section">
+            <div class="product-card">
+                <div class="product-info"><h3>Quentinha P</h3><p>R$ 12,00</p></div>
+                <div class="controls">
+                    <button class="btn-qty" onclick="changeQty('p', -1)">-</button>
+                    <span id="q-p" class="qty-val">0</span>
+                    <button class="btn-qty" onclick="changeQty('p', 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-info"><h3>Quentinha M</h3><p>R$ 15,00</p></div>
+                <div class="controls">
+                    <button class="btn-qty" onclick="changeQty('m', -1)">-</button>
+                    <span id="q-m" class="qty-val">0</span>
+                    <button class="btn-qty" onclick="changeQty('m', 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-info"><h3>Quentinha G</h3><p>R$ 20,00</p></div>
+                <div class="controls">
+                    <button class="btn-qty" onclick="changeQty('g', -1)">-</button>
+                    <span id="q-g" class="qty-val">0</span>
+                    <button class="btn-qty" onclick="changeQty('g', 1)">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-order">
+            <div class="total-box"><span>Total:</span> <b id="total-val" style="font-size:22px;">R$ 0,00</b></div>
+            <button class="send-btn" onclick="finalizeOrder()">🟢 ENVIAR PEDIDO (RETIRADA)</button>
+            <div class="info-retirada">📍 Retire na loja - Informe seu nome ao chegar</div>
+        </div>
+    </div>
+    <script>
+        let order = { p: 0, m: 0, g: 0 };
+        function changeQty(i, d) { order[i] = Math.max(0, order[i] + d); document.getElementById('q-' + i).innerText = order[i]; calc(); }
+        function calc() {
+            let total = (order.p * 12) + (order.m * 15) + (order.g * 20);
+            document.getElementById('total-val').innerText = 'R$ ' + total.toFixed(2).replace('.', ',');
+        }
+        function finalizeOrder() {
+            if (order.p === 0 && order.m === 0 && order.g === 0) {
+                alert("Por favor, escolha pelo menos uma quentinha!");
+                return;
+            }
+
+            // Nome do restaurante incluso na mensagem
+            let text = "*🍲 NÍVIA QUENTINHA - PEDIDO (RETIRADA) 🍲*\n\n";
+            if(order.p > 0) text += `🍛 *${order.p}x* Quentinha P (R$ 12,00) = R$ ${(order.p*12).toFixed(2)}\n`;
+            if(order.m > 0) text += `🍛 *${order.m}x* Quentinha M (R$ 15,00) = R$ ${(order.m*15).toFixed(2)}\n`;
+            if(order.g > 0) text += `🍛 *${order.g}x* Quentinha G (R$ 20,00) = R$ ${(order.g*20).toFixed(2)}\n`;
+            
+            let total = (order.p * 12) + (order.m * 15) + (order.g * 20);
+            text += `\n📦 *TOTAL: R$ ${total.toFixed(2)}*`;
+            text += `\n🚫 *APENAS RETIRADA* - Retirar no balcão`;
+            text += `\n💰 *Pagamento:* (informar no chat - dinheiro/Pix)`;
+            text += `\n\n_*Pedido gerado pelo cardápio online*_`;
+
+            let encodedMsg = encodeURIComponent(text);
+            let phoneNumber = "5583996461866";
+            let url = `https://wa.me/${phoneNumber}?text=${encodedMsg}`;
+            
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
