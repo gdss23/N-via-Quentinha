@@ -9,7 +9,7 @@
 </script><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nívia Quentinha - Pedidos (Apenas Retirada)</title>
+    <title>Nívia Almoço - Pedidos (Apenas Retirada)</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background-color: #fff5e6; display: flex; justify-content: center; padding: 10px; }
@@ -33,7 +33,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Nívia Quentinha</h1>
+            <h1>Nívia Almoço</h1>
             <p>Comida caseira com carinho</p>
             <div class="retirada-badge">📦 APENAS RETIRADA</div>
         </div>
@@ -83,7 +83,7 @@
             }
 
             // Nome do restaurante incluso na mensagem
-            let text = "*🍲 NÍVIA QUENTINHA - PEDIDO (RETIRADA) 🍲*\n\n";
+            let text = "*🍲 NÍVIA ALMOÇO - PEDIDO (RETIRADA) 🍲*\n\n";
             if(order.p > 0) text += `🍛 *${order.p}x* Quentinha P (R$ 12,00) = R$ ${(order.p*12).toFixed(2)}\n`;
             if(order.m > 0) text += `🍛 *${order.m}x* Quentinha M (R$ 15,00) = R$ ${(order.m*15).toFixed(2)}\n`;
             if(order.g > 0) text += `🍛 *${order.g}x* Quentinha G (R$ 20,00) = R$ ${(order.g*20).toFixed(2)}\n`;
